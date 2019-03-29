@@ -1,0 +1,2 @@
+# uninstall-mackeeper
+Uninstall MacKeeper
