@@ -1,0 +1,8 @@
+#!/bin/bash
+# postinstall - Uninstall MacKeeper
+
+export PATH=/usr/bin:/bin:/usr/sbin:/sbin
+
+pkill -9 -ix mackeeper
+rm -rf '/Applications/MacKeeper.app'
+exit 0

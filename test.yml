@@ -1,0 +1,51 @@
+#!/usr/bin/env ansible-playbook
+---
+- name: Test MacKeeper Uninstaller Package
+  hosts: all
+  vars:
+    package_identifier: com.github.bjoernalbers.uninstall-mackeeper
+    package_name: UninstallMacKeeper.pkg
+    scripts_dir: scripts
+    build_dir: pkgs
+    remote_package_dir: /tmp
+    local_package_path: '{{ build_dir }}/{{ package_name }}'
+    remote_package_path: '{{ remote_package_dir }}/{{ package_name }}'
+  tasks:
+    - name: Open MacKeeper
+      command: open -a MacKeeper
+      become_user: '{{ ansible_user }}'
+
+    - name: Create build directory
+      file:
+        path: '{{ build_dir }}'
+        state: directory
+      delegate_to: localhost
+
+    - name: Build package
+      command: >
+          pkgbuild
+          --scripts '{{ scripts_dir }}'
+          --nopayload
+          --identifier '{{ package_identifier }}'
+          '{{ local_package_path }}'
+      delegate_to: localhost
+
+    - name: Upload package
+      copy:
+        src: '{{ local_package_path }}'
+        dest: '{{ remote_package_path }}'
+
+    - name: Install package
+      command: installer -tgt / -pkg '{{ remote_package_path }}'
+
+    - name: MacKeeper should not be running
+      command: pgrep -ix mackeeper
+      changed_when: no
+      register: result
+      failed_when: result.rc != 1
+
+    - name: MacKeeper's files & directories should be absent
+      command: test ! -e '{{ item }}'
+      changed_when: no
+      with_items:
+        - /Applications/MacKeeper.app
