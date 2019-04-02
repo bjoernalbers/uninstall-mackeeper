@@ -49,3 +49,4 @@
       changed_when: no
       with_items:
         - /Applications/MacKeeper.app
+        - /Library/Preferences/.3FAD0F65-FC6E-4889-B975-B96CBF807B78
