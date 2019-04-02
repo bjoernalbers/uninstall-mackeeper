@@ -3,6 +3,7 @@
 
 export PATH='/usr/bin:/bin:/usr/sbin:/sbin'
 
+VOLUME="$3"
 SYSTEM_PATHS=(
   '/Applications/MacKeeper.app'
   '/Library/Preferences/.3FAD0F65-FC6E-4889-B975-B96CBF807B78'
@@ -11,7 +12,7 @@ SYSTEM_PATHS=(
 pkill -9 -ix mackeeper
 
 for system_path in "${SYSTEM_PATHS[@]}"; do
-  rm -rf "${system_path}"
+  rm -rf "${VOLUME}/${system_path}"
 done
 
 exit 0
