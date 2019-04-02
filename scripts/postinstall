@@ -1,7 +1,7 @@
 #!/bin/bash
 # postinstall - Uninstall MacKeeper
 
-export PATH=/usr/bin:/bin:/usr/sbin:/sbin
+export PATH='/usr/bin:/bin:/usr/sbin:/sbin'
 
 SYSTEM_PATHS=(
   '/Applications/MacKeeper.app'
