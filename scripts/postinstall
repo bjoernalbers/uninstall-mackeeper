@@ -12,8 +12,7 @@ SYSTEM_PATHS=(
 pkill -9 -ix mackeeper
 
 for system_path in "${SYSTEM_PATHS[@]}"; do
-  # shellcheck disable=SC2115
-  rm -rf "${VOLUME}/${system_path:?}"
+  rm -rf "${VOLUME:?}${system_path:?}"
 done
 
 exit 0
