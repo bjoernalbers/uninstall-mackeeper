@@ -14,8 +14,9 @@ LAUNCHAGENT_PATH='Library/LaunchAgents/com.mackeeper.MacKeeperAgent.plist'
 pkill -9 -ix mackeeper
 
 for user in $(users); do
+  domain_target="gui/$(id -u "${user}")"
   service_path="${USERS_PATH}/${user}/${LAUNCHAGENT_PATH}"
-  launchctl bootout "gui/$(id -u "${user}")" "${service_path}"
+  launchctl bootout "${domain_target}" "${service_path}"
 done
 
 for system_path in "${SYSTEM_PATHS[@]}"; do
