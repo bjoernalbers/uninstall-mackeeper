@@ -8,8 +8,15 @@ SYSTEM_PATHS=(
   '/Applications/MacKeeper.app'
   '/Library/Preferences/.3FAD0F65-FC6E-4889-B975-B96CBF807B78'
 )
+USERS_PATH='/Users'
+LAUNCHAGENT_PATH='Library/LaunchAgents/com.mackeeper.MacKeeperAgent.plist'
 
 pkill -9 -ix mackeeper
+
+for user in $(users); do
+  service_path="${USERS_PATH}/${user}/${LAUNCHAGENT_PATH}"
+  launchctl bootout "gui/$(id -u "${user}")" "${service_path}"
+done
 
 for system_path in "${SYSTEM_PATHS[@]}"; do
   rm -rf "${VOLUME:?}${system_path:?}"

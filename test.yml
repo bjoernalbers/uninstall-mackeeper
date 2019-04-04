@@ -44,6 +44,12 @@
       register: result
       failed_when: result.rc != 1
 
+    - name: MacKeeperAgent should not be running
+      command: pgrep -ix mackeeperagent
+      changed_when: no
+      register: result
+      failed_when: result.rc != 1
+
     - name: MacKeeper's files & directories should be absent
       command: test ! -e '{{ item }}'
       changed_when: no
