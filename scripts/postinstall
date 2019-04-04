@@ -10,6 +10,16 @@ MACKEEPER_SYSTEM_PATHS=(
   '/Applications/MacKeeper.app'
   '/Library/Preferences/.3FAD0F65-FC6E-4889-B975-B96CBF807B78'
 )
+MACKEEPER_USER_PATHS=(
+  'Library/Application Support/com.mackeeper.MacKeeper'
+  'Library/Application Support/com.mackeeper.MacKeeperAgent'
+  'Library/Application Support/MacKeeper'
+  'Library/Saved Application State/com.mackeeper.MacKeeper.savedState'
+  'Library/Preferences/com.mackeeper.MacKeeper.plist'
+  'Library/Preferences/com.mackeeper.MacKeeperAgent.plist'
+  'Library/Logs/MacKeeper'
+  'Library/LaunchAgents/com.mackeeper.MacKeeperAgent.plist'
+)
 
 pkill -9 -x MacKeeper
 
@@ -21,6 +31,12 @@ done
 
 for mackeeper_system_path in "${MACKEEPER_SYSTEM_PATHS[@]}"; do
   rm -rf "${VOLUME:?}${mackeeper_system_path:?}"
+done
+
+for user_path in "${VOLUME:?}${USERS_PATH:?}"/*; do
+  for mackeeper_user_path in "${MACKEEPER_USER_PATHS[@]}"; do
+    rm -rf "${user_path:?}/${mackeeper_user_path:?}"
+  done
 done
 
 exit 0
