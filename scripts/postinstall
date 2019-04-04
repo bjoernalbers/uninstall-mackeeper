@@ -5,7 +5,8 @@ export PATH='/usr/bin:/bin:/usr/sbin:/sbin'
 
 VOLUME="$3"
 USERS_PATH='/Users'
-MACKEEPER_LAUNCHAGENT_PATH='Library/LaunchAgents/com.mackeeper.MacKeeperAgent.plist'
+MACKEEPER_LAUNCHAGENT_PATH=\
+  'Library/LaunchAgents/com.mackeeper.MacKeeperAgent.plist'
 MACKEEPER_SYSTEM_PATHS=(
   '/Applications/MacKeeper.app'
   '/Library/Preferences/.3FAD0F65-FC6E-4889-B975-B96CBF807B78'
