@@ -6,9 +6,9 @@
     package_identifier: com.github.bjoernalbers.uninstall-mackeeper
     package_name: 'Uninstall-MacKeeper.pkg'
     scripts_dir: scripts
-    build_dir: pkgs
+    temporary_build_dir: 'tmp'
     remote_package_dir: /tmp
-    local_package_path: '{{ build_dir }}/{{ package_name }}'
+    local_package_path: '{{ temporary_build_dir }}/{{ package_name }}'
     remote_package_path: '{{ remote_package_dir }}/{{ package_name }}'
   tasks:
     - name: Open MacKeeper
@@ -18,7 +18,7 @@
 
     - name: Create build directory
       file:
-        path: '{{ build_dir }}'
+        path: '{{ temporary_build_dir }}'
         state: directory
       delegate_to: localhost
 
