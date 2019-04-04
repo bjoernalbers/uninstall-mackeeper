@@ -11,7 +11,7 @@ SYSTEM_PATHS=(
 USERS_PATH='/Users'
 LAUNCHAGENT_PATH='Library/LaunchAgents/com.mackeeper.MacKeeperAgent.plist'
 
-pkill -9 -ix mackeeper
+pkill -9 -x MacKeeper
 
 for user in $(users); do
   domain_target="gui/$(id -u "${user}")"
