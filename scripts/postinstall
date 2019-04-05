@@ -39,11 +39,13 @@ MACKEEPER_PACKAGE_IDENTIFIERS=(
 
 pkill -9 -x MacKeeper
 
-for user in $(users); do
-  domain_target="gui/$(id -u "${user}")"
-  service_path="${USERS_PATH:?}/${user}/${MACKEEPER_LAUNCHAGENT_PATH:?}"
-  launchctl bootout "${domain_target}" "${service_path}"
-done
+if pgrep -qx MacKeeperAgent; then
+  for user in $(users); do
+    domain_target="gui/$(id -u "${user}")"
+    service_path="${USERS_PATH:?}/${user}/${MACKEEPER_LAUNCHAGENT_PATH:?}"
+    launchctl bootout "${domain_target}" "${service_path}"
+  done
+fi
 
 for mackeeper_system_path in "${MACKEEPER_SYSTEM_PATHS[@]}"; do
   rm -rf "${VOLUME:?}${mackeeper_system_path:?}"
