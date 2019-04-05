@@ -32,6 +32,10 @@ MACKEEPER_USER_PATHS=(
   'Library/Caches/com.mackeeper.MacKeeper'
   'Library/Caches/com.mackeeper.MacKeeperAgent'
 )
+MACKEEPER_PACKAGE_IDENTIFIERS=(
+  'com.mackeeper.MacKeeper.pkg'
+  'com.mackeeper.MacKeeper.affid.pkg'
+)
 
 pkill -9 -x MacKeeper
 
@@ -50,6 +54,10 @@ for user_path in "${VOLUME:?}${USERS_PATH:?}"/*; do
   for mackeeper_user_path in "${MACKEEPER_USER_PATHS[@]}"; do
     rm -rf "${user_path:?}/${mackeeper_user_path:?}"
   done
+done
+
+for mackeeper_package_identifier in "${MACKEEPER_PACKAGE_IDENTIFIERS[@]}"; do
+  pkgutil --forget "${mackeeper_package_identifier:?}" --volume "${VOLUME:?}"
 done
 
 exit 0

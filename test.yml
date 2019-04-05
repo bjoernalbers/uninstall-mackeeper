@@ -81,3 +81,9 @@
         - Library/Caches/io.fabric.sdk.mac.data/com.mackeeper.MacKeeperAgent
         - Library/Caches/com.mackeeper.MacKeeper
         - Library/Caches/com.mackeeper.MacKeeperAgent
+
+    - name: MacKeeper packages should be absent
+      command: pkgutil --pkgs="com.mackeeper.*"
+      changed_when: no
+      register: result
+      failed_when: result.rc != 1
