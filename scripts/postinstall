@@ -37,8 +37,10 @@ MACKEEPER_PACKAGE_IDENTIFIERS=(
   'com.mackeeper.MacKeeper.affid.pkg'
 )
 
+# Quit MacKeeper.app
 pkill -9 -x MacKeeper
 
+# Stop all MacKeeper background processes (MacKeeperAgent)
 if pgrep -qx MacKeeperAgent; then
   for user in $(users); do
     domain_target="gui/$(id -u "${user}")"
@@ -47,10 +49,12 @@ if pgrep -qx MacKeeperAgent; then
   done
 fi
 
+# Delete MacKeeper system paths
 for mackeeper_system_path in "${MACKEEPER_SYSTEM_PATHS[@]}"; do
   rm -rf "${VOLUME:?}${mackeeper_system_path:?}"
 done
 
+# Delete MacKeeper user paths for each user
 for user_path in "${VOLUME:?}${USERS_PATH:?}"/*; do
   [[ "${user_path##*/}" == 'Shared' ]] && continue # Skip shared user folder
   for mackeeper_user_path in "${MACKEEPER_USER_PATHS[@]}"; do
@@ -58,8 +62,10 @@ for user_path in "${VOLUME:?}${USERS_PATH:?}"/*; do
   done
 done
 
+# Remove MacKeeper packages from package list
 for mackeeper_package_identifier in "${MACKEEPER_PACKAGE_IDENTIFIERS[@]}"; do
   pkgutil --forget "${mackeeper_package_identifier:?}" --volume "${VOLUME:?}"
 done
 
+# Exit successfully
 exit 0
