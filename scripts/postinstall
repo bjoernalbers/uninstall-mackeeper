@@ -35,6 +35,7 @@ for mackeeper_system_path in "${MACKEEPER_SYSTEM_PATHS[@]}"; do
 done
 
 for user_path in "${VOLUME:?}${USERS_PATH:?}"/*; do
+  [[ "${user_path##*/}" == 'Shared' ]] && continue # Skip shared user folder
   for mackeeper_user_path in "${MACKEEPER_USER_PATHS[@]}"; do
     rm -rf "${user_path:?}/${mackeeper_user_path:?}"
   done
