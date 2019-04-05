@@ -70,3 +70,14 @@
         - Library/Preferences/com.mackeeper.MacKeeperAgent.plist
         - Library/Logs/MacKeeper
         - Library/LaunchAgents/com.mackeeper.MacKeeperAgent.plist
+        - Library/Caches/com.crashlytics.data/com.mackeeper.MacKeeperUninstaller
+        - Library/Caches/com.crashlytics.data/com.mackeeper.MacKeeper
+        - Library/Caches/com.crashlytics.data/com.mackeeper.MacKeeperAgent
+        - Library/Caches/com.apple.nsurlsessiond/Downloads/com.mackeeper.MacKeeperUninstaller
+        - Library/Caches/com.apple.nsurlsessiond/Downloads/com.mackeeper.MacKeeper
+        - Library/Caches/com.apple.nsurlsessiond/Downloads/com.mackeeper.MacKeeperAgent
+        - Library/Caches/io.fabric.sdk.mac.data/com.mackeeper.MacKeeperUninstaller
+        - Library/Caches/io.fabric.sdk.mac.data/com.mackeeper.MacKeeper
+        - Library/Caches/io.fabric.sdk.mac.data/com.mackeeper.MacKeeperAgent
+        - Library/Caches/com.mackeeper.MacKeeper
+        - Library/Caches/com.mackeeper.MacKeeperAgent
