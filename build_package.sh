@@ -8,7 +8,7 @@ IDENTIFIER="com.github.bjoernalbers.${NAME}"
 VERSION="$(date '+%Y%m%dT%H%M%SZ')"
 BASE_DIR="$(dirname "$0")"
 BUILD_DIR="${BASE_DIR}/tmp"
-SCRIPTS_DIR="${BASE_DIR}/scripts"
+SCRIPTS_DIR="${BASE_DIR}/uninstaller"
 SUFFIX='pkg'
 
 display_usage() {
