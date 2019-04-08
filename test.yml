@@ -2,34 +2,20 @@
 ---
 - name: Test MacKeeper Uninstaller Package
   hosts: all
-  vars:
-    package_identifier: com.github.bjoernalbers.uninstall-mackeeper
-    package_name: 'Uninstall-MacKeeper.pkg'
-    scripts_dir: scripts
-    temporary_build_dir: 'tmp'
-    remote_package_dir: /tmp
-    local_package_path: '{{ temporary_build_dir }}/{{ package_name }}'
-    remote_package_path: '{{ remote_package_dir }}/{{ package_name }}'
   tasks:
     - name: Open MacKeeper
       command: open -a MacKeeper
       become_user: '{{ ansible_user }}'
       ignore_errors: yes
 
-    - name: Create build directory
-      file:
-        path: '{{ temporary_build_dir }}'
-        state: directory
-      delegate_to: localhost
-
     - name: Build package
-      command: >
-          pkgbuild
-          --scripts '{{ scripts_dir }}'
-          --nopayload
-          --identifier '{{ package_identifier }}'
-          '{{ local_package_path }}'
+      command: ./build_package.sh
       delegate_to: localhost
+      register: build_package
+
+    - set_fact:
+        local_package_path: '{{ build_package.stdout }}'
+        remote_package_path: '/tmp/{{ build_package.stdout | basename }}'
 
     - name: Upload package
       copy:
