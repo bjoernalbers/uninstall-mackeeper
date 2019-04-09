@@ -1,0 +1,15 @@
+---
+os: osx
+
+install:
+  - sudo easy_install pip
+  - sudo pip install ansible
+  - ansible --version
+
+script:
+  - ./install_mackeeper.yml --inventory localhost, --connection local
+  - ./uninstall_mackeeper.yml --inventory localhost, --connection local
+
+after_failure:
+  - ps aux | grep -i mackeeper
+  - sed -n '/Uninstall-MacKeeper/,$p' /var/log/install.log

@@ -1,0 +1,66 @@
+#!/usr/bin/env ansible-playbook
+---
+- name: Uninstall MacKeeper
+  hosts: all
+  tasks:
+    - name: Build package
+      command: ./build_package.sh
+      delegate_to: localhost
+      register: build_package
+
+    - set_fact:
+        local_package_path: '{{ build_package.stdout }}'
+        remote_package_path: '/tmp/{{ build_package.stdout | basename }}'
+
+    - name: Upload package
+      copy:
+        src: '{{ local_package_path }}'
+        dest: '{{ remote_package_path }}'
+
+    - name: Install package
+      command: installer -target / -package '{{ remote_package_path }}'
+      become: yes
+
+    - name: MacKeeper should not be running
+      command: pgrep MacKeeper
+      changed_when: no
+      register: pgrep_mackeeper
+      failed_when: pgrep_mackeeper.rc != 1
+
+    - name: MacKeeper system paths should be absent
+      command: test ! -e '{{ item }}'
+      changed_when: no
+      with_items:
+        - /Applications/MacKeeper.app
+        - /Library/Preferences/.3FAD0F65-FC6E-4889-B975-B96CBF807B78
+
+    - name: Find MacKeeper user paths
+      find:
+        paths:
+          - '{{ ansible_env.HOME }}/Documents'
+          - '{{ ansible_env.HOME }}/Library/Application Scripts'
+          - '{{ ansible_env.HOME }}/Library/Application Support'
+          - '{{ ansible_env.HOME }}/Library/Caches'
+          - '{{ ansible_env.HOME }}/Library/Containers'
+          - '{{ ansible_env.HOME }}/Library/LaunchAgents'
+          - '{{ ansible_env.HOME }}/Library/Logs'
+          - '{{ ansible_env.HOME }}/Library/Preferences'
+          - '{{ ansible_env.HOME }}/Library/Saved Application State'
+          - '{{ ansible_env.HOME }}/Library/Scripts'
+          - '{{ ansible_env.HOME }}/Library/Services'
+        pattern: '*MacKeeper*'
+        recurse: yes
+        file_type: any
+        hidden: yes
+      register: find_mackeeper
+
+    - name: MacKeeper user paths should be absent
+      debug:
+        msg: '{{ find_mackeeper.files | map(attribute="path") | list }}'
+      failed_when: find_mackeeper.files|count > 0
+
+    - name: MacKeeper packages should be absent
+      command: pkgutil --pkgs="com.mackeeper.*"
+      changed_when: no
+      register: pkgutil_mackeeper
+      failed_when: pkgutil_mackeeper.rc != 1

@@ -1,0 +1,31 @@
+#!/usr/bin/env ansible-playbook
+---
+- name: Install MacKeeper
+  hosts: all
+  vars:
+    package_path: '{{ ansible_env.HOME }}/Downloads/MacKeeper.pkg'
+    download_url: 'https://download.mackeeper.com/package.php'
+    plist_path: '/Applications/MacKeeper.app/Contents/Info.plist'
+  tasks:
+    - name: Download MacKeeper package
+      get_url:
+        url: '{{ download_url }}'
+        dest: '{{ package_path }}'
+
+    - name: Install MacKeeper package
+      command: installer -target / -package '{{ package_path }}'
+      become: yes
+
+    - name: Get MacKeeper version
+      command: >
+        /usr/libexec/PlistBuddy
+        -c 'Print :CFBundleShortVersionString'
+        '{{ plist_path }}'
+      register: mackeeper_version
+
+    - name: Display MacKeeper version
+      debug: var=mackeeper_versions.stdout
+
+    - name: Open MacKeeper
+      command: open -a MacKeeper
+      ignore_errors: yes # This might fail if no user is logged in

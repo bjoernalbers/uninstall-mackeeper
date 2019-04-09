@@ -1,5 +1,7 @@
 # Uninstall MacKeeper
 
+[![Build Status](https://travis-ci.org/bjoernalbers/uninstall-mackeeper.svg?branch=master)](https://travis-ci.org/bjoernalbers/uninstall-mackeeper)
+
 Simple uninstaller to automatically uninstall MacKeeper from your Mac.
 
 ## Usage
