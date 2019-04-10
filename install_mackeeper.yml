@@ -24,7 +24,7 @@
       register: mackeeper_version
 
     - name: Display MacKeeper version
-      debug: var=mackeeper_versions.stdout
+      debug: var=mackeeper_version.stdout
 
     - name: Open MacKeeper
       command: open -a MacKeeper
