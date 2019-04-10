@@ -10,5 +10,4 @@ script:
   - ./test.yml --inventory localhost, --connection local
 
 after_failure:
-  - ps aux | grep -i mackeeper
   - sed -n '/Uninstall-MacKeeper/,$p' /var/log/install.log
