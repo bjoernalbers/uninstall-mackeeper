@@ -31,6 +31,10 @@ MACKEEPER_USER_PATHS=(
   'Library/Caches/io.fabric.sdk.mac.data/com.mackeeper.MacKeeperUninstaller'
   'Library/Caches/com.mackeeper.MacKeeper'
   'Library/Caches/com.mackeeper.MacKeeperAgent'
+  'Library/Application Scripts/com.mackeeper.MacKeeperAgent.MacKeeperAntiTracking'
+  'Library/Application Scripts/com.mackeeper.MacKeeperAgent.MacKeeperAntiTrackingIcon'
+  'Library/Containers/com.mackeeper.MacKeeperAgent.MacKeeperAntiTracking'
+  'Library/Containers/com.mackeeper.MacKeeperAgent.MacKeeperAntiTrackingIcon'
 )
 MACKEEPER_PACKAGE_IDENTIFIERS=(
   'com.mackeeper.MacKeeper.pkg'
