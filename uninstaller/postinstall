@@ -11,30 +11,20 @@ MACKEEPER_SYSTEM_PATHS=(
   '/Applications/MacKeeper.app'
   '/Library/Preferences/.3FAD0F65-FC6E-4889-B975-B96CBF807B78'
 )
+# These paths will be expanded by a glob (*) suffix on deletion:
 MACKEEPER_USER_PATHS=(
-  'Library/Application Scripts/com.mackeeper.MacKeeperAgent.MacKeeperAntiTracking'
-  'Library/Application Scripts/com.mackeeper.MacKeeperAgent.MacKeeperAntiTrackingIcon'
+  'Library/Application Scripts/com.mackeeper.MacKeeper'
   'Library/Application Support/MacKeeper'
   'Library/Application Support/com.mackeeper.MacKeeper'
-  'Library/Application Support/com.mackeeper.MacKeeperAgent'
   'Library/Caches/com.apple.nsurlsessiond/Downloads/com.mackeeper.MacKeeper'
-  'Library/Caches/com.apple.nsurlsessiond/Downloads/com.mackeeper.MacKeeperAgent'
-  'Library/Caches/com.apple.nsurlsessiond/Downloads/com.mackeeper.MacKeeperUninstaller'
   'Library/Caches/com.crashlytics.data/com.mackeeper.MacKeeper'
-  'Library/Caches/com.crashlytics.data/com.mackeeper.MacKeeperAgent'
-  'Library/Caches/com.crashlytics.data/com.mackeeper.MacKeeperUninstaller'
   'Library/Caches/com.mackeeper.MacKeeper'
-  'Library/Caches/com.mackeeper.MacKeeperAgent'
   'Library/Caches/io.fabric.sdk.mac.data/com.mackeeper.MacKeeper'
-  'Library/Caches/io.fabric.sdk.mac.data/com.mackeeper.MacKeeperAgent'
-  'Library/Caches/io.fabric.sdk.mac.data/com.mackeeper.MacKeeperUninstaller'
-  'Library/Containers/com.mackeeper.MacKeeperAgent.MacKeeperAntiTracking'
-  'Library/Containers/com.mackeeper.MacKeeperAgent.MacKeeperAntiTrackingIcon'
-  'Library/LaunchAgents/com.mackeeper.MacKeeperAgent.plist'
+  'Library/Containers/com.mackeeper.MacKeeper'
+  'Library/LaunchAgents/com.mackeeper.MacKeeper'
   'Library/Logs/MacKeeper'
-  'Library/Preferences/com.mackeeper.MacKeeper.plist'
-  'Library/Preferences/com.mackeeper.MacKeeperAgent.plist'
-  'Library/Saved Application State/com.mackeeper.MacKeeper.savedState'
+  'Library/Preferences/com.mackeeper.MacKeeper'
+  'Library/Saved Application State/com.mackeeper.MacKeeper'
 )
 MACKEEPER_PACKAGE_IDENTIFIERS=(
   'com.mackeeper.MacKeeper.pkg'
@@ -62,7 +52,7 @@ done
 for user_path in "${VOLUME:?}${USERS_PATH:?}"/*; do
   [[ "${user_path##*/}" == 'Shared' ]] && continue # Skip shared user folder
   for mackeeper_user_path in "${MACKEEPER_USER_PATHS[@]}"; do
-    rm -rf "${user_path:?}/${mackeeper_user_path:?}"
+    rm -rf "${user_path:?}/${mackeeper_user_path:?}"*
   done
 done
 
