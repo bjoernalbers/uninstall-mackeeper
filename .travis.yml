@@ -7,8 +7,7 @@ install:
   - ansible --version
 
 script:
-  - ./install_mackeeper.yml --inventory localhost, --connection local
-  - ./uninstall_mackeeper.yml --inventory localhost, --connection local
+  - ./test.yml --inventory localhost, --connection local
 
 after_failure:
   - ps aux | grep -i mackeeper
