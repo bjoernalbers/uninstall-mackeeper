@@ -1,31 +1,68 @@
 #!/usr/bin/env ansible-playbook
 ---
-- name: Uninstall MacKeeper
+- name: Install & uninstall MacKeeper and verify that it's gone
   hosts: all
+  vars:
+    mackeeper_package_path: '{{ ansible_env.HOME }}/Downloads/MacKeeper.pkg'
+    mackeeper_download_url: 'https://download.mackeeper.com/package.php'
+    mackeeper_plist_path: '/Applications/MacKeeper.app/Contents/Info.plist'
   tasks:
-    - name: Build package
+    - name: Download MacKeeper
+      get_url:
+        url: '{{ mackeeper_download_url }}'
+        dest: '{{ mackeeper_package_path }}'
+      tags: install
+
+    - name: Install MacKeeper
+      command: installer -target / -package '{{ mackeeper_package_path }}'
+      become: yes
+      tags: install
+
+    - name: Get MacKeeper version
+      command: >
+        /usr/libexec/PlistBuddy
+        -c 'Print :CFBundleShortVersionString'
+        '{{ mackeeper_plist_path }}'
+      register: mackeeper_version
+      tags: install
+
+    - name: Display MacKeeper version
+      debug: var=mackeeper_version.stdout
+      tags: install
+
+    - name: Open MacKeeper
+      command: open -a MacKeeper
+      ignore_errors: yes # This might fail if no user is logged in
+      tags: install
+
+    - name: Build uninstaller package
       command: ./build_package.sh
       delegate_to: localhost
       register: build_package
+      tags: uninstall
 
     - set_fact:
         local_package_path: '{{ build_package.stdout }}'
         remote_package_path: '/tmp/{{ build_package.stdout | basename }}'
+      tags: uninstall
 
-    - name: Upload package
+    - name: Upload uninstaller package
       copy:
         src: '{{ local_package_path }}'
         dest: '{{ remote_package_path }}'
+      tags: uninstall
 
-    - name: Install package
+    - name: Uninstall MacKeeper
       command: installer -target / -package '{{ remote_package_path }}'
       become: yes
+      tags: uninstall
 
     - name: MacKeeper should not be running
       command: pgrep MacKeeper
       changed_when: no
       register: pgrep_mackeeper
       failed_when: pgrep_mackeeper.rc != 1
+      tags: verify
 
     - name: MacKeeper system paths should be absent
       command: test ! -e '{{ item }}'
@@ -33,6 +70,7 @@
       with_items:
         - /Applications/MacKeeper.app
         - /Library/Preferences/.3FAD0F65-FC6E-4889-B975-B96CBF807B78
+      tags: verify
 
     - name: Find MacKeeper user paths
       find:
@@ -53,14 +91,17 @@
         file_type: any
         hidden: yes
       register: find_mackeeper
+      tags: verify
 
     - name: MacKeeper user paths should be absent
       debug:
         msg: '{{ find_mackeeper.files | map(attribute="path") | list }}'
       failed_when: find_mackeeper.files|count > 0
+      tags: verify
 
     - name: MacKeeper packages should be absent
       command: pkgutil --pkgs="com.mackeeper.*"
       changed_when: no
       register: pkgutil_mackeeper
       failed_when: pkgutil_mackeeper.rc != 1
+      tags: verify
