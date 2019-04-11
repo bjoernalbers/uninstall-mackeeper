@@ -7,6 +7,8 @@ VOLUME="$3"
 USERS_PATH='/Users'
 MACKEEPER_LAUNCHAGENT_PATH=\
 'Library/LaunchAgents/com.mackeeper.MacKeeperAgent.plist'
+MAX_SECONDS_TO_WAIT_UNTIL_MACKEEPER_STOPS=20
+MACKEEPER_PROCESS_PATTERN='^MacKeeper'
 MACKEEPER_SYSTEM_PATHS=(
   '/Applications/MacKeeper.app'
   '/Library/Preferences/.3FAD0F65-FC6E-4889-B975-B96CBF807B78'
@@ -42,6 +44,19 @@ if pgrep -qx MacKeeperAgent; then
     launchctl bootout "${domain_target}" "${service_path}"
   done
 fi
+
+# Wait a few seconds for MacKeeper processes to stop
+seconds_waited=0
+while pgrep -q "${MACKEEPER_PROCESS_PATTERN}"; do
+  echo -n "MacKeeper processes still running... "
+  if [[ $seconds_waited -ge $MAX_SECONDS_TO_WAIT_UNTIL_MACKEEPER_STOPS ]]; then
+    echo "but we won't wait any longer."
+    break
+  fi
+  echo "after ${seconds_waited} seconds."
+  sleep 1
+  ((seconds_waited++))
+done
 
 # Delete MacKeeper system paths
 for mackeeper_system_path in "${MACKEEPER_SYSTEM_PATHS[@]}"; do
