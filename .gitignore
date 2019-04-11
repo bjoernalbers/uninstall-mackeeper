@@ -1,3 +1,4 @@
+/ansible.cfg
 /pkgs/
 /tmp/
 *.retry
