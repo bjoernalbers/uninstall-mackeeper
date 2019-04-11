@@ -8,7 +8,9 @@ USERS_PATH='/Users'
 MACKEEPER_LAUNCHAGENT_PATH=\
 'Library/LaunchAgents/com.mackeeper.MacKeeperAgent.plist'
 MAX_SECONDS_TO_WAIT_UNTIL_MACKEEPER_STOPS=20
-MACKEEPER_PROCESS_PATTERN='^MacKeeper'
+MACKEEPER_APP_PROCESS_NAME='MacKeeper'
+MACKEEPER_AGENT_PROCESS_NAME='MacKeeperAgent'
+MACKEEPER_PROCESSES_PATTERN='^MacKeeper'
 MACKEEPER_SYSTEM_PATHS=(
   '/Applications/MacKeeper.app'
   '/Library/Preferences/.3FAD0F65-FC6E-4889-B975-B96CBF807B78'
@@ -34,10 +36,10 @@ MACKEEPER_PACKAGE_IDENTIFIERS=(
 )
 
 # Quit MacKeeper.app
-pkill -x MacKeeper
+pkill -x "${MACKEEPER_APP_PROCESS_NAME}"
 
 # Stop all MacKeeper background processes (MacKeeperAgent)
-if pgrep -qx MacKeeperAgent; then
+if pgrep -qx "${MACKEEPER_AGENT_PROCESS_NAME}"; then
   for user in $(users); do
     domain_target="gui/$(id -u "${user}")"
     service_path="${USERS_PATH:?}/${user}/${MACKEEPER_LAUNCHAGENT_PATH:?}"
@@ -47,7 +49,7 @@ fi
 
 # Wait a few seconds for MacKeeper processes to stop
 seconds_waited=0
-while pgrep -q "${MACKEEPER_PROCESS_PATTERN}"; do
+while pgrep -q "${MACKEEPER_PROCESSES_PATTERN}"; do
   echo -n "MacKeeper processes still running... "
   if [[ $seconds_waited -ge $MAX_SECONDS_TO_WAIT_UNTIL_MACKEEPER_STOPS ]]; then
     echo "but we won't wait any longer."
