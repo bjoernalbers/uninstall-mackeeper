@@ -32,7 +32,7 @@ MACKEEPER_PACKAGE_IDENTIFIERS=(
 )
 
 # Quit MacKeeper.app
-pkill -9 -x MacKeeper
+pkill -x MacKeeper
 
 # Stop all MacKeeper background processes (MacKeeperAgent)
 if pgrep -qx MacKeeperAgent; then
