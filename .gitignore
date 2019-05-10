@@ -3,3 +3,7 @@
 /tmp/
 *.retry
 /inventory.yml
+/.bundle/
+/_site/
+Gemfile*
+/vendor/
