@@ -1,6 +1,6 @@
 ---
 theme: jekyll-theme-cayman
 title: Uninstall MacKeeper
-description: A simple Uninstaller to completely delete MacKeeper from your Mac
+description: A simple Uninstaller to delete MacKeeper
 download_url: https://github.com/bjoernalbers/uninstall-mackeeper/releases/download/1.0.0/Uninstall-MacKeeper-1.0.0.pkg
 show_downloads: false

@@ -1,7 +1,8 @@
 # Uninstall MacKeeper
 
-Do you want to remove [MacKeeper](https://mackeeper.com) from your Mac?
-Here's an easy way:
+Do you want to completely remove [MacKeeper](https://mackeeper.com) from your
+Mac?
+Here's an easy and reliable method:
 
 1. Download
    [latest release](https://github.com/bjoernalbers/uninstall-mackeeper/releases/latest)
